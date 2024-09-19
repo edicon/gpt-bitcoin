@@ -66,6 +66,10 @@ git clone https://github.com/youtube-jocoding/gpt-bitcoin.git
 ### 서버에서 라이브러리 설치
 ```
 pip3 install -r requirements.txt
+# fix install error
+pip3 install setuptools
+# https://github.com/twopirllc/pandas-ta/issues/799
+python3 -m pip install numpy==1.26.4
 ```
 ### .env 파일 만들고 API KEY 넣기
 ```
