@@ -115,3 +115,6 @@ ex. kill -9 13586
 ```
 ## 추후 계획
 - 빗썸, 바이낸스, 코인베이스, OKX, 바이비트도 가능하면 다루겠음
+
+## 강의 자료
+- https://jocoding.net/gptbitcoin

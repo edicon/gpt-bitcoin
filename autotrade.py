@@ -142,9 +142,11 @@ def make_decision_and_execute():
         decision = json.loads(advice)
         print(decision)
         if decision.get('decision') == "buy":
-            execute_buy()
+            print("Decision: BUY")
+            # execute_buy()
         elif decision.get('decision') == "sell":
-            execute_sell()
+            print("Decision: SELL")
+            # execute_sell()
     except Exception as e:
         print(f"Failed to parse the advice as JSON: {e}")
 
