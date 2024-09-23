@@ -5,6 +5,7 @@ import pyupbit
 import pandas as pd
 import pandas_ta as ta
 import json
+from pydantic import BaseModel
 from openai import OpenAI
 import schedule
 import time
@@ -17,6 +18,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import base64
+
+# TODO: Set this to True if you want structured outputs from GPT-4
+STRUCTURED_OUTPUTS = False
+
+class TradingAdvice(BaseModel):
+    decision: str
+    percentage: float
+    reason: str
 
 # Setup
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -287,21 +296,37 @@ def analyze_data_with_gpt4(news_data, data_json, last_decisions, fear_and_greed,
         if not instructions:
             print("No instructions found.")
             return None
-        
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": instructions},
-                {"role": "user", "content": news_data},
-                {"role": "user", "content": data_json},
-                {"role": "user", "content": last_decisions},
-                {"role": "user", "content": fear_and_greed},
-                {"role": "user", "content": current_status},
-                {"role": "user", "content": [{"type": "image_url","image_url": {"url": f"data:image/jpeg;base64,{current_base64_image}"}}]}
-            ],
-            response_format={"type":"json_object"}
-        )
-        advice = response.choices[0].message.content
+
+        if STRUCTURED_OUTPUTS:
+            response = client.beta.chat.completions.parse(
+                model="gpt-4o-2024-08-06",
+                messages=[
+                    {"role": "system", "content": instructions},
+                    {"role": "user", "content": news_data},
+                    {"role": "user", "content": data_json},
+                    {"role": "user", "content": last_decisions},
+                    {"role": "user", "content": fear_and_greed},
+                    {"role": "user", "content": current_status},
+                    {"role": "user", "content": [{"type": "image_url","image_url": {"url": f"data:image/jpeg;base64,{current_base64_image}"}}]}
+                ],
+                response_format=TradingAdvice
+            )
+            advice = response.choices[0].message.parsed
+        else:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": instructions},
+                    {"role": "user", "content": news_data},
+                    {"role": "user", "content": data_json},
+                    {"role": "user", "content": last_decisions},
+                    {"role": "user", "content": fear_and_greed},
+                    {"role": "user", "content": current_status},
+                    {"role": "user", "content": [{"type": "image_url","image_url": {"url": f"data:image/jpeg;base64,{current_base64_image}"}}]}
+                ],
+                response_format={"type":"json_object"}
+            )
+            advice = response.choices[0].message.content
         return advice
     except Exception as e:
         print(f"Error in analyzing data with GPT-4: {e}")
