@@ -1,5 +1,7 @@
 # OpenAI o1 소개: https://openai.com/index/learning-to-reason-with-llms/
-# 실시간 성과 공유: http://3.35.214.209:8501/
+# [최신 오픈AI o1에게 비트코인 투자 완전히 맡겨봤습니다 (실시간 수익률 공개)]( https://www.youtube.com/watch?v=RhW8303hyQ0)
+# - https://github.com/youtube-jocoding/aibitcoin <-- not access
+# - 실시간 성과 공유: http://3.35.214.209:8501/
 import os
 from dotenv import load_dotenv
 import pyupbit
