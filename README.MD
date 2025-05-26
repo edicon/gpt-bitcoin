@@ -1,3 +1,5 @@
+# NOTE: Original from jocoding
+#
 # 비트코인 GPT 인공지능 AI 업비트 자동매매 시스템 만들기
 - GPT API를 활용하여 투자를 자동화 합니다. by 유튜버 조코딩
 
